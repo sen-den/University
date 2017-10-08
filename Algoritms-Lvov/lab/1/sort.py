@@ -1,13 +1,14 @@
 import random
+import sys
 import time
+
+sys.setrecursionlimit(10000)
 
 def howlong(f):
     def tmp(*args, **kwargs):
         t = time.time()
-        res = f(*args, **kwargs)
-        need_time = time.time()-t
-        tmp.__name__ = f.__name__
-        tmp.__doc__ = f.__doc__
+        f(*args, **kwargs)
+        need_time = time.time() - t
         return need_time
     return tmp
 
@@ -27,9 +28,13 @@ def sort_bubble(data):
 
 @howlong
 def sort_quick(data):
+    return sort_quick_helper(data)
+
+
+def sort_quick_helper(data):
     if data == []:
         return data
- 
+     
     less = []
     equal = []
     greather = []
@@ -43,7 +48,7 @@ def sort_quick(data):
         else:
             equal.append(i)
 
-    return sort_quick(less) + sort_quick(equal) + sort_quick(greather)
+    return sort_quick_helper(less) + equal + sort_quick_helper(greather)
 
 
 @howlong
@@ -70,10 +75,9 @@ def sort_select2(arr):
     return arr
 
 
-
-listForSorting = randlist(1000)
+listForSorting = randlist(int(sys.argv[1]))
  
 print(sort_select(listForSorting))
 print(sort_select2(listForSorting))
-#print(sort_quick(listForSorting))
+print(sort_quick(listForSorting))
 print(sort_bubble(listForSorting))
