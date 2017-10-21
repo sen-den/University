@@ -1,0 +1,190 @@
+\documentclass[
+	12pt,
+	paper=A4,
+	oneside,
+	draft
+]{scrreprt}
+
+% Кодировка, шрифты и языки
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian,ukrainian]{babel}
+
+% Лист и структура
+\usepackage[a4paper, top=2cm, bottom=2cm, left=3cm, right=1cm]{geometry}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+%\usepackage{multicol}
+
+% Разное
+\usepackage{datetime}
+\usepackage{ifthen}
+\usepackage{lipsum}
+
+% Абзацный отступ
+\parindent=1.25cm
+
+
+% Настройка колонтитулов, в т.ч. - номера страницы
+\usepackage{fancyhdr}
+\fancyhf{} % очистка текущих значений
+\fancyhead[R]{\thepage} % установка верхнего колонтитула
+\renewcommand{\headrulewidth}{0pt} % убрать разделительную линию
+\pagestyle{fancy}
+
+% Pictures (plots ect)
+\usepackage{pgfplots} 
+%% Export to CSV
+%\usepackage{filecontents}
+%\begin{filecontents*}{data.csv}
+%n,s1,s2,s3,s4
+%5,0.00001168,0.00001121,0.00002050,0.00001121
+%
+%\end{filecontents*}
+\usepackage[raggedright]{titlesec}
+% Управление содержанием
+\usepackage{titletoc}
+\titleformat{\chapter}[display] % раздел
+	{\filcenter}	% центровать
+    %{\MakeUppercase{\chaptertitlename} \thechapter}	% РОЗДІЛ Х 
+    {}
+    {0pt} % отступ после
+	{\MakeUppercase}	% название капсом
+	{}
+\assignpagestyle{\chapter}{fancy}
+\titlespacing{\chapter} % указуємо, що модифікуємо саме розділ
+	{0ex} % відступ зліва
+	{-30pt} % відступ зверху 
+	{8pt} % відступ знизу
+\titlecontents{chapter}
+	[0ex] %
+	{}
+	{\MakeUppercase{\chaptername\ \thecontentslabel {}\quad}\MakeUppercase}
+	{}
+	{\dotfill\contentspage}    
+
+%	ПІДРОЗДІЛ
+\titleformat{\section}[block]
+    {\normalsize}
+    {\thesection\quad}
+    {1em}
+    {}
+\titlespacing{\section}
+	{\parindent}
+	{0pt}
+	{0pt}
+\titlecontents{section}
+	[5ex]
+	{}
+	{\thecontentslabel\quad}
+	{}
+	{\dotfill\contentspage}    
+
+\usepackage{pgfplotstable}
+\usepackage{csvsimple}
+\usepackage{longtable}
+\begin{document}
+\chapter{Построение и анализ алгоритмов}
+\section{Анализ алгоритмов сортировки}
+\thispagestyle{empty}
+
+Сортировка простыми обменами, сортировка пузырьком\,--\,простой алгоритм сортировки. Для понимания и реализации этот алгоритм — простейший, но эффективен он лишь для небольших массивов. Сложность алгоритма: $ O(n^{2})$. В то же время метод сортировки обменами лежит в основе некоторых более совершенных алгоритмов, таких как шейкерная сортировка, пирамидальная сортировка и быстрая сортировка.
+
+Сортировка вставками\,--\,достаточно простой алгоритм. Основным преимуществом алгоритма сортировки вставками является возможность сортировать массив по мере его получения.
+
+Сортировка выбором\,--\,алгоритм сортировки. Может быть как устойчивый, так и неустойчивый. На массиве из $n$ элементов имеет время выполнения в худшем, среднем и лучшем случае $ O(n^{2})$, предполагая что сравнения делаются за постоянное время.
+
+Быстрая сортировка, сортировка Хоара\,--\,один из самых быстрых известных универсальных алгоритмов сортировки массивов: в среднем $O(n\log n)$ обменов при упорядочении $n$ элементов; из-за наличия ряда недостатков на практике обычно используется с некоторыми доработками.
+
+%\pgfplotstabletypeset[col sep=comma,
+%     columns={n,s1,s2,s3,s4},
+%    ]{data.csv}
+
+\csvloop{
+  file=data.csv,
+  no head,
+  column count=5,% could may removed for 10 or less columns
+  before reading=\begin{longtable}{l|l|l|l|l}\caption{Время выполнения сортировок\label{tab:Sort}}\endlastfoot,
+  command={\csviffirstrow%
+    {N & select (1) & select (2) & quick & bubble}
+    {\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv}%
+  },
+  late after line=\\,
+  late after first line=\\\hline\endhead,
+  late after last line=,
+  after reading=\end{longtable}
+}
+В таблице \ref{tab:Sort} приведены результаты выполнения реализаций алгоритмов сортироки на языке Python в зависимости от размера сортируемого массива, где
+
+\textit{N}~--- количество элементов в массиве (его размер);
+
+\textit{select (1)}~--- сортировка выбором с использованием конструкции \textit{while};
+
+\textit{select (2)}~--- сортировка выбором с использованием конструкции \textit{for... in range()};
+
+\textit{quick}~--- быстрая сортировка;
+
+\textit{bubble}~--- сортировка пузырьком.
+\bigskip
+
+Из данных в этой таблице построены графики на рисунке \ref{fig:Sort}, из которых очевидно, что время выполнения сортировки пузырьком растет существенно быстрее остальных сортировок.
+
+\begin{figure}[hb]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	xlabel={размер массива, \textit{n}},
+    ylabel={время сортировки, \textit{s}},
+    scaled x ticks = false,
+    legend style={at={(0.0,1.0)}, anchor=north west}]
+
+	\addplot table [y=s1, x=n, col sep=comma] {data.csv};
+	\addplot table [y=s2, x=n, col sep=comma] {data.csv};
+	\addplot table [y=s3, x=n, col sep=comma] {data.csv};
+	\addplot table [y=s4, x=n, col sep=comma] {data.csv};
+	
+	\addlegendentry{select (1)}
+	\addlegendentry{select (2)}
+	\addlegendentry{quick}
+	\addlegendentry{bubble}
+\end{axis}
+\end{tikzpicture}
+\caption{Зависимость времени выполнения алгоритмов от размера массива} \label{fig:Sort}
+\end{figure}
+
+При этом можно сделать вывод, что реализация алгоритма с участием конструкции \textit{while} быстрее, чем аналогичная с использованием конструкции \textit{for... in range()}. Последняя, при своей работе, создает множество, перебирая все его элементы, таким образом являясь аналогом \textit{foreach} из некоторых других языков, например PHP.
+
+\begin{figure}[hb]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	xlabel={размер массива, \textit{n}},
+    ylabel={время сортировки, \textit{ms}},
+    scaled x ticks = false,
+    ytick scale label code/.code={},
+    legend style={at={(0.0,1.0)}, anchor=north west}]
+
+	\addplot table [y=s1, x=n, col sep=comma] {data2.csv};
+	\addplot table [y=s2, x=n, col sep=comma] {data2.csv};
+	\addplot table [y=s3, x=n, col sep=comma] {data2.csv};
+	\addplot table [y=s4, x=n, col sep=comma] {data2.csv};
+	
+	\addlegendentry{select (1)}
+	\addlegendentry{select (2)}
+	\addlegendentry{quick}
+	\addlegendentry{bubble}
+\end{axis}
+\end{tikzpicture}
+\caption{Зависимость времени выполнения от размера для небольших массивов} \label{fig:SortSmall}
+\end{figure}
+
+Из представленных графиков можно сделать вывод, что сортировку пузырьком целесообразно использовать лишь для небольших массивов (порядка десятков элементов). 
+
+В то же время видно, что представленная реализация алгоритма быстрой сортировки проигрывает во времени алгоритму сортировки выбором на небольших массивах. Ведь, несмотря на меньшую алгоритмичискую сложность ($O(n\log n)$ против $O(n^n)$), при её оценке не учитывается константа $с$, которая играет роль при небольших $n$.
+\vfill
+\begin{flushright}
+Сенчишен Д.А.
+\end{flushright}
+
+\end{document}

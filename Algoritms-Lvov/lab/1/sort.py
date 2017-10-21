@@ -4,6 +4,7 @@ import time
 
 sys.setrecursionlimit(10000)
 
+# function-decorator for other functions. Returns decorated function execution time
 def howlong(f):
     def tmp(*args, **kwargs):
         t = time.time()
@@ -13,10 +14,7 @@ def howlong(f):
     return tmp
 
 
-def randlist(size):
-    return [random.randint(0, 1000)  for i in range(0, size)]
-
-
+# Bubblesort decorated function
 @howlong
 def sort_bubble(data):
     for i in range(len(data)):
@@ -26,6 +24,8 @@ def sort_bubble(data):
     return data
 
 
+# Recursion function decoration is untrivial, couses errors when decoratet directly.
+# Used 'helper' function for avoiding this.
 @howlong
 def sort_quick(data):
     return sort_quick_helper(data)
@@ -38,7 +38,7 @@ def sort_quick_helper(data):
     less = []
     equal = []
     greather = []
-    
+    # splitting into three subarrays
     pivot = data[0]
     for i in data:
         if i > pivot:
@@ -47,6 +47,7 @@ def sort_quick_helper(data):
             less.append(i)
         else:
             equal.append(i)
+    # and concatenting sorted subarrays recursively
 
     return sort_quick_helper(less) + equal + sort_quick_helper(greather)
 
@@ -75,9 +76,16 @@ def sort_select2(arr):
     return arr
 
 
-listForSorting = randlist(int(sys.argv[1]))
- 
-print(sort_select(listForSorting))
-print(sort_select2(listForSorting))
-print(sort_quick(listForSorting))
-print(sort_bubble(listForSorting))
+def randlist(size):
+    return [random.randint(0, 1000)  for i in range(0, size)]
+
+if (len(sys.argv) == 1):
+    print('Use command line arguments - one or more integer array sizes for test')
+else:
+    for param in sys.argv[1:]:
+        listForSorting = randlist(int(param))
+     
+        print()
+        print('Select sort, ', param, ': ', sort_select(listForSorting))
+        print('Quick sort, ', param, ': ', sort_quick(listForSorting))
+        print('Bubble sort, ', param, ': ', sort_bubble(listForSorting))
