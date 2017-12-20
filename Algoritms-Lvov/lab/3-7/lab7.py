@@ -1,7 +1,7 @@
 import math
 
-# уже есть неккие комменты
-def point_lists_equals(a, b):           # check if list a equal
+
+def point_lists_equals(a, b):           
     if len(a) != len(b): return False
     for n in range(len(a)):
         if a[n] not in b:
@@ -10,7 +10,7 @@ def point_lists_equals(a, b):           # check if list a equal
 
 
 
-def neighboors(graph, point):       # возвращение соседей
+def neighboors(graph, point):       
     matrix = graph
     pos = matrix[0].index(point)
     tflist = matrix[1][pos]
@@ -22,7 +22,7 @@ def neighboors(graph, point):       # возвращение соседей
 
 
 
-def joined_neighboors(graph, point, travelled=None):    # добавление соседя
+def joined_neighboors(graph, point, travelled=None):    
     if not travelled:
         travelled = []
     result = []
@@ -37,7 +37,7 @@ def joined_neighboors(graph, point, travelled=None):    # добавление �
 
 
 
-def nearest_from_island(graph, first_point):        # ближайший сосед
+def nearest_from_island(graph, first_point):        
     min_dist = math.inf
     nearest = None
     for point in joined_neighboors(graph, first_point):
@@ -47,7 +47,7 @@ def nearest_from_island(graph, first_point):        # ближайший сос�
 
 
 
-def nearest_unjoined_point(matrix, point_to):       # ближайший не связанные сосед
+def nearest_unjoined_point(matrix, point_to):       
     min_dist = math.inf
     nearest = None
     for point in matrix[0]:
@@ -59,13 +59,13 @@ def nearest_unjoined_point(matrix, point_to):       # ближайший не с
     return nearest
 
 
-# а вот и расстояние
-def dist(point1, point2):                 # return distance to nearest neighboor
+
+def dist(point1, point2):                 
     return math.sqrt((point2[0] - point1[0]) ** 2) + ((point2[1] - point1[1]) ** 2)
 
 
 
-def singletons(matrix):                 # create singleton
+def singletons(matrix):                 
     result = []
     for n in len(matrix[0]):
         if matrix[1][n].count(True) <= 1:
@@ -74,7 +74,7 @@ def singletons(matrix):                 # create singleton
 
 
 
-def nearest_point(matrix, point_to):    # nearest point
+def nearest_point(matrix, point_to):    
     min_dist = math.inf
     nearest = None
     for point in matrix[0]:
@@ -84,7 +84,7 @@ def nearest_point(matrix, point_to):    # nearest point
     return nearest
 
 
-# Соеденяет две точки в матрице
+
 def join(matrix, point1, point2):
     pos1 = matrix[0].index(point1)
     pos2 = matrix[0].index(point2)
@@ -94,11 +94,11 @@ def join(matrix, point1, point2):
     matrix[1][pos2][pos1] = True
 
 
-# задача -- есть граф. Нада взять его кусок так, что бы все так же были все связаны, но цена путей была наименьшей
-# Только не фижу здесь весов
-# Наверняка они это растояние между узлами на декартовой плоскости
-def main():                                         # init class and call functions
-    graph = ([[1, 2], [3, 4], [-2, -5], [4, -10]], # граф и матрица смежностей (связи)
+
+
+
+def main():                                         
+    graph = ([[1, 2], [3, 4], [-2, -5], [4, -10]], 
              [[True, False, False, False],
               [False, True, False, False],
               [False, False, True, False],
@@ -109,4 +109,4 @@ def main():                                         # init class and call functi
 
 
 
-main()                  # call function main
+main()                  

@@ -1,97 +1,97 @@
-from random import randint 	# рандом
-import math			# матан
-import functools		# и какая-то хрень
-# Что бы в функции можно было пихать функции, возвращать из них функции и заниматься прочьими функциональными извращениями
+from random import randint 	
+import math			
+import functools		
 
 
 
-class BitVectorSet:             # Create class for BitVector Set # Таки правду написали, множество на бинарном векторе (хз что это такое, надо почитать)
-    def __init__(self,size): # Конструктор
-        self.array = [] # Пустой список, в котором будет все
-        for n in range(size): # Наполняем его ложью в заданном количестве
+
+class BitVectorSet:             
+    def __init__(self,size): 
+        self.array = [] 
+        for n in range(size): 
             self.array[n] = False
 
-    def __len__(self): # длина
+    def __len__(self): 
         return len(self.array)
 
-    def __contains__(self,el): # проверка наличия
-        if len(self.array) < (el - 1): # магия...
+    def __contains__(self,el): 
+        if len(self.array) < (el - 1): 
             return False
         return self.array[el] == True
 
-    def insert(self,el): # Вставить
+    def insert(self,el): 
         if el not in self:
             self.array[el] = True
 
-    def remove(self,el): # Удалить
+    def remove(self,el): 
         if el in self:
             self.array[el] = False
 
 
-# А тут даже сами написали комменты
-# Правда, такие же по полезности
-# Только нипаруски
-class ListSet:                  # Create class List Set       
+
+
+
+class ListSet:                  
     
-    def __init__(self):         # initialize empty list  
+    def __init__(self):         
         self.l = []
 
-    def __len__(self):          # return length of list   
+    def __len__(self):          
         return len(self.l)
 
-    def __str__(self):          # return list as string
+    def __str__(self):          
         return str(self.l)
 
-    def __repr__(self):         # represent as object
+    def __repr__(self):         
         return repr(self.l)
 
-    def __contains__(self, el):     # check if element contains in a lis
+    def __contains__(self, el):     
         return el in self.l
 
     
-    def __getitem__(self, key):     # get item by position
+    def __getitem__(self, key):     
         return self.l[key]
 
     
-    def __setitem__(self, key, value):      # set item and insert it on position
+    def __setitem__(self, key, value):      
         if value in self.l:
             raise ValueError('Set already has value: ' + str(value))
         self.l[key] = value
 
     
-    def add(self, value):                   # add value to the end of the list
+    def add(self, value):                   
         if value in self.l:
             raise ValueError('Set already has value: ' + str(value))
         self.l.append(value)
 
    
-    def remove(self, value):                # remove element by value
+    def remove(self, value):                
         self.l.remove(value)
 
 
-# Пересечение, то, что в обеих есть
-def intersection(a, b):                     # define function for intersection
+
+def intersection(a, b):                     
     
-    if type(a) == type(b) and type(a) == BitVectorSet:  # if a and b is BitVectorSet objects
-        result = BitVectorSet(max(len(a), len(b)))      # result is maximal value from a and b
-        for n in range(len(result)):            # for every element in length of result Vector
-            result[n] = a[n] and b[n]           # to result set initialize value from Vector a and Vector b   
+    if type(a) == type(b) and type(a) == BitVectorSet:  
+        result = BitVectorSet(max(len(a), len(b)))      
+        for n in range(len(result)):            
+            result[n] = a[n] and b[n]           
         return result
     
-    if type(a) == type(b) and type(a) == ListSet:   # if type of a and b is ListSet
-        result = ListSet()          # initialize result to ListSet object
-        for el in a.l:              # iterate through list a
-            if el in b.l:       # iterate through list b
-                result.add(el)  # to result add element
+    if type(a) == type(b) and type(a) == ListSet:   
+        result = ListSet()          
+        for el in a.l:              
+            if el in b.l:       
+                result.add(el)  
         return result
     else:
-        raise TypeError('Incorrect arguments type') # return error
+        raise TypeError('Incorrect arguments type') 
 
 
-# Объединение, все, что хотя бы в одном из
-def union(a, b):                    # define function for union
+
+def union(a, b):                    
     
-    if type(a) == type(b) and type(a) == BitVectorSet:      # if a and b is Vectors
+    if type(a) == type(b) and type(a) == BitVectorSet:      
         result = BitVectorSet(max(len(a), len(b)))
         for n in range(len(result)):
             result[n] = a[n] or b[n]
@@ -108,10 +108,10 @@ def union(a, b):                    # define function for union
     else:
         raise TypeError('Incorrect arguments type')
 
-# Разница, есть в первом, но нет во втором
+
 def difference(a, b):
     
-    if type(a) == type(b) and type(a) == BitVectorSet:      # if a and b Vectors
+    if type(a) == type(b) and type(a) == BitVectorSet:      
         result = BitVectorSet(max(len(a), len(b)))
         for n in range(len(result)):
             result[n] = True if (a[n] and not b[n]) or (not a[n] and b[n]) else False
@@ -128,19 +128,19 @@ def difference(a, b):
     else:
         raise TypeError('Incorrect arguments type')
 
-# Депутат
-# Хз зачем он вообще нужен
-# Такой задачи не нашел, о которой там говориться
-# А тут какие-то странные штуки мы с ним делаем
+
+
+
+
 class Congressman:
     def __init__(self, name='Ivan', price=None):
         if price == None:
-            dice = randint(1, 100)          # if price is None than voters % choose random from 0 to 1000 # О да, 146% мало, повышаем
-            if dice <= 20:              # if dice less than 20 price is inf # dice - игральная кость
+            dice = randint(1, 100)          
+            if dice <= 20:              
                 price = math.inf
-            elif dice <= 30:                # else if dice less or equal to 30 price equals 0
+            elif dice <= 30:                
                 price = 0
-            else:                       # price equals rand value from 1 to 1000
+            else:                       
                 price = randint(1,1000)
         self.name = name
         self.price = price
@@ -151,19 +151,19 @@ class Congressman:
     def __repr__(self):
         return '{0}: {1}'.format(self.name, self.price)
     
-    def give(self, payment): # дать депутату бабла?
+    def give(self, payment): 
         return self.price <= payment
 
 
 
-def generate_congressmans(count):                   # function that create congressmans
-    return [Congressman() for n in range(count)] # генератор рандомных депутатов
+def generate_congressmans(count):                   
+    return [Congressman() for n in range(count)] 
 
 
- # Счас бы без задачи решение разбирать
-  # Походу считаем своих и не своих
-   # ОНО ДАЖЕ ЗАПУСКАЕТСЯ И СЧИТАЕТ!!!!111
-def vote(price, data, print_data=False):            # function that represent votes
+ 
+  
+   
+def vote(price, data, print_data=False):            
     money_amount = data['money_amount']
     congressmans = data['congressmans']
     friends = data['friends']
@@ -171,7 +171,7 @@ def vote(price, data, print_data=False):            # function that represent vo
     enemies = data['enemies']
 
     
-    if money_amount < price * len(list(filter((lambda x: 0 < x.price < math.inf), congressmans))):      # if money_amount less than price multiply
+    if money_amount < price * len(list(filter((lambda x: 0 < x.price < math.inf), congressmans))):      
         raise ValueError('Not enough money')
     votes = 0
     for c in congressmans:
