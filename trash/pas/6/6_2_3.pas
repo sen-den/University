@@ -3,6 +3,7 @@ var
 
 function arccos(a:double):double;
 	begin
+		{Формула из интернета}
 		arccos:=arctan(sqrt(1-sqr(cos(a)))/cos(a));
 	end;
 

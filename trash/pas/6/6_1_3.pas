@@ -9,7 +9,7 @@ var
 	mid: integer;
 	avg:double;
 
-procedure Middle(A:Arr; var mid:integer);
+procedure Middle(A:Arr; var mid:integer); {Поиск среднего}
 	var 
 		i,j: integer;
 		f: boolean;
@@ -26,33 +26,32 @@ procedure Middle(A:Arr; var mid:integer);
 					end;
 			end;
 		{for i:=1 to size do writeln(A[i]);}
-		mid:=A[n+1]; {Будет центральным}
-		{for i:=1 to size do writeln(A[i]);
-		writeln(mid);}
+		mid:=A[n+1]; {Будет центральным} 
+		{В [1 2 3 4 5] средним будет 3, у нас количество - 2n+1, если n=2, то 3 это n+1}
 	end;
 
-procedure AvgArefmetic(A:Arr; var avg:double);
+procedure AvgArefmetic(A:Arr; var avg:double); {Chtlytt fhtavtnbxtcrjt}
 	var 
 		i, sum: integer;
 	begin
 		sum:=0;
 		for i:=1 to size do 
 			sum:=sum+A[i];
-		{for i:=1 to size do writeln(A[i]);}
-		avg:=sum/size; {Будет центральным}
-		{writeln(avg);}
+		avg:=sum/size; {Сумма на количество}
 	end;
 
 begin
-	for i:=1 to size do begin
+	for i:=1 to size do begin {Заполняем}
 		write('A[',i,'] = '); readln(A[i]);
 		end;
 
+	{Считаем}
 	Middle(A, mid);
 	AvgArefmetic(A, avg);
 
+	{Определяем и отвечаем}
 	if mid>avg then writeln('Middle > afifm average')
 	else if avg>mid then writeln('Arifm average > middle')
-	else writeln('Average = middle');
+	else writeln('Average = middle'); {Если не больше и не меньше, то равны}
 	
 end.
