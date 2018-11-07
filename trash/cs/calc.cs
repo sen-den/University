@@ -14,6 +14,7 @@ namespace ConsoleApp1
             char operation;
 
             do
+            {
                 a = int.Parse(Console.ReadLine());
                 b = int.Parse(Console.ReadLine());
                 operation = char.Parse(Console.ReadLine());
@@ -36,7 +37,7 @@ namespace ConsoleApp1
                 }
 
                 Console.WriteLine(result);
-
+            }
             while (true);
         }
     }
