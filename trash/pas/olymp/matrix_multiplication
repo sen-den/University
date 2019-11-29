@@ -1,0 +1,53 @@
+const
+  max_size = 500;
+  input_file_name = 'input';
+  output_file_name = 'output';
+var
+  matrix_A, matrix_B, matrix_C: array [1..max_size, 1..max_size] of Integer;
+  i, j, k, l: Integer;
+  input_file, output_file: TextFile;
+  size_of_current_matrix: Integer;
+  equality: Boolean;
+  result: Integer;
+BEGIN
+  Assign(input_file, input_file_name);
+  Reset(input_file);
+  Assign(output_file, output_file_name);
+  Rewrite(output_file);
+
+  repeat
+    Read(input_file, size_of_current_matrix);
+    if size_of_current_matrix = 0 then
+      break;
+
+    for i:=1 to size_of_current_matrix do
+      for j:=1 to size_of_current_matrix do
+        Read(input_file, matrix_A[i,j]);
+    for i:=1 to size_of_current_matrix do
+      for j:=1 to size_of_current_matrix do
+        Read(input_file, matrix_B[i,j]);
+    for i:=1 to size_of_current_matrix do
+      for j:=1 to size_of_current_matrix do
+        Read(input_file, matrix_C[i,j]);
+
+    equality := True;
+    for i:=1 to size_of_current_matrix do
+      for j:=1 to size_of_current_matrix do
+      begin
+        result := 0;
+        for k:=1 to size_of_current_matrix do
+          result := result + matrix_A[i,k] * matrix_B[k,j];
+        if result <> matrix_C[i, j] then
+          equality := false;
+      end;
+
+    if (equality) then
+      WriteLn(output_file, 'YES')
+    else
+      WriteLn(output_file, 'NO');
+
+  until (size_of_current_matrix = 0);
+  Close(input_file);
+  Close(output_file);
+
+END.
